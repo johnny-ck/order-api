@@ -1,0 +1,26 @@
+version: "3"
+
+services:  
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+    networks: 
+      - order-api-network  
+  app:
+    container_name: app
+    build: .
+    image: order-api
+    depends_on:
+      - mongo
+    ports:
+      - "8080:3000"  
+    networks: 
+      - order-api-network
+    restart: always
+networks:
+  order-api-network:
+    driver: bridge
